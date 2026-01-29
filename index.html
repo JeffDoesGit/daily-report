@@ -307,7 +307,7 @@
         const currentLocation = determineLocation();
 
         // Initialize EmailJS (You'll need to add your own keys here)
-        emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+        emailjs.init("hWlSmvPuQLZOag4V-"); // Replace with your EmailJS public key
 
         document.getElementById('reportForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -396,10 +396,10 @@ ${document.getElementById('tokyo_financial').value}`;
             try {
                 // Send email using EmailJS
                 await emailjs.send(
-                    'YOUR_SERVICE_ID',  // Replace with your EmailJS service ID
-                    'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
+                    'service_v5nsaar',  // Replace with your EmailJS service ID
+                    'Gmail', // Replace with your EmailJS template ID
                     {
-                        to_email: 'YOUR_WIFE_EMAIL',  // Replace with your wife's email
+                        to_email: 'natsumi.erron@gmail.com',  // Replace with your wife's email
                         subject: `Daily Report - ${today}`,
                         message: emailBody,
                         location: currentLocation === 'kyoto' ? 'Kyoto' : 'Tokyo'
