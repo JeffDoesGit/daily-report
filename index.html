@@ -179,6 +179,94 @@
             font-weight: 600;
         }
 
+        /* Login Screen Styles */
+        .login-container {
+            text-align: center;
+        }
+
+        .login-container h1 {
+            margin-bottom: 20px;
+        }
+
+        .login-container p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .google-signin-btn {
+            background: white;
+            color: #444;
+            border: 2px solid #e0e0e0;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+        }
+
+        .google-signin-btn:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .google-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* User Info Bar */
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .user-details {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid #ddd;
+            color: #666;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #f0f0f0;
+            border-color: #999;
+        }
+
+        .hidden {
+            display: none;
+        }
+
         @media (max-width: 640px) {
             .container {
                 padding: 20px;
@@ -187,109 +275,204 @@
             h1 {
                 font-size: 24px;
             }
+
+            .user-info {
+                flex-direction: column;
+                gap: 12px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="success-message" id="successMessage">
-            ✓ Report sent successfully to your wife!
-        </div>
-        <div class="error-message" id="errorMessage">
-            ✗ Failed to send report. Please try again.
+        <!-- Login Screen -->
+        <div id="loginScreen" class="login-container">
+            <h1>Daily Report</h1>
+            <p>Sign in to submit your daily report</p>
+            <button id="googleSignInBtn" class="google-signin-btn">
+                <svg class="google-icon" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Sign in with Google
+            </button>
         </div>
 
-        <h1>Daily Report</h1>
-        <div class="location-badge" id="locationBadge"></div>
+        <!-- Main App (Hidden until logged in) -->
+        <div id="mainApp" class="hidden">
+            <!-- User Info Bar -->
+            <div class="user-info">
+                <div class="user-details">
+                    <img id="userAvatar" class="user-avatar" src="" alt="User">
+                    <span id="userName" class="user-name"></span>
+                </div>
+                <button id="logoutBtn" class="logout-btn">Sign Out</button>
+            </div>
 
-        <form id="reportForm">
-            <!-- KYOTO FORM -->
-            <div id="kyotoForm" style="display: none;">
-                <div class="section">
-                    <div class="section-title">1. PARENTING & ROLE MODEL</div>
-                    <div class="goal">Goal: Be supportive and set a great example for the kids</div>
-                    
-                    <label>What I did today:</label>
-                    <textarea id="kyoto_parenting" rows="3" placeholder="List what you did..."></textarea>
-                    
-                    <div class="reflection-question">
-                        <p>Reflection Question: Was I happy with how I showed up today? Would I want my kids to act like I did?</p>
-                        <textarea id="kyoto_reflection" rows="2" placeholder="Your reflection..."></textarea>
+            <div class="success-message" id="successMessage">
+                ✓ Report sent successfully to your wife!
+            </div>
+            <div class="error-message" id="errorMessage">
+                ✗ Failed to send report. Please try again.
+            </div>
+
+            <h1>Daily Report</h1>
+            <div class="location-badge" id="locationBadge"></div>
+
+            <form id="reportForm">
+                <!-- KYOTO FORM -->
+                <div id="kyotoForm" style="display: none;">
+                    <div class="section">
+                        <div class="section-title">1. PARENTING & ROLE MODEL</div>
+                        <div class="goal">Goal: Be supportive and set a great example for the kids</div>
+                        
+                        <label>What I did today:</label>
+                        <textarea id="kyoto_parenting" rows="3" placeholder="List what you did..."></textarea>
+                        
+                        <div class="reflection-question">
+                            <p>Reflection Question: Was I happy with how I showed up today? Would I want my kids to act like I did?</p>
+                            <textarea id="kyoto_reflection" rows="2" placeholder="Your reflection..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">2. SUPPORTING MY WIFE</div>
+                        <div class="goal">Goal: Be helpful and make her life easier</div>
+                        
+                        <label>What I did today:</label>
+                        <textarea id="kyoto_wife" rows="3" placeholder="List what you did..."></textarea>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">3. FINANCIAL PROGRESS</div>
+                        <div class="goal">Goal: Take another step toward our financial goals</div>
+                        
+                        <label>What I did today:</label>
+                        <textarea id="kyoto_financial" rows="3" placeholder="List what you did..."></textarea>
                     </div>
                 </div>
 
-                <div class="section">
-                    <div class="section-title">2. SUPPORTING MY WIFE</div>
-                    <div class="goal">Goal: Be helpful and make her life easier</div>
-                    
-                    <label>What I did today:</label>
-                    <textarea id="kyoto_wife" rows="3" placeholder="List what you did..."></textarea>
-                </div>
-
-                <div class="section">
-                    <div class="section-title">3. FINANCIAL PROGRESS</div>
-                    <div class="goal">Goal: Take another step toward our financial goals</div>
-                    
-                    <label>What I did today:</label>
-                    <textarea id="kyoto_financial" rows="3" placeholder="List what you did..."></textarea>
-                </div>
-            </div>
-
-            <!-- TOKYO FORM -->
-            <div id="tokyoForm" style="display: none;">
-                <div class="section">
-                    <div class="section-title">1. HEALTH & FITNESS</div>
-                    <div class="goal">Goal: Work out and eat right</div>
-                    
-                    <div class="radio-group">
-                        <label style="display: block; margin-bottom: 10px; font-weight: 600;">Did I work out?</label>
-                        <label>
-                            <input type="radio" name="workout" value="YES" required>
-                            YES
-                        </label>
-                        <label>
-                            <input type="radio" name="workout" value="NO">
-                            NO
-                        </label>
+                <!-- TOKYO FORM -->
+                <div id="tokyoForm" style="display: none;">
+                    <div class="section">
+                        <div class="section-title">1. HEALTH & FITNESS</div>
+                        <div class="goal">Goal: Work out and eat right</div>
+                        
+                        <div class="radio-group">
+                            <label style="display: block; margin-bottom: 10px; font-weight: 600;">Did I work out?</label>
+                            <label>
+                                <input type="radio" name="workout" value="YES" required>
+                                YES
+                            </label>
+                            <label>
+                                <input type="radio" name="workout" value="NO">
+                                NO
+                            </label>
+                        </div>
+                        
+                        <label>What I did:</label>
+                        <textarea id="tokyo_workout_details" rows="2" placeholder="Describe your workout..."></textarea>
+                        
+                        <label>How did I eat today?</label>
+                        <textarea id="tokyo_food" rows="2" placeholder="Describe your meals..."></textarea>
                     </div>
-                    
-                    <label>What I did:</label>
-                    <textarea id="tokyo_workout_details" rows="2" placeholder="Describe your workout..."></textarea>
-                    
-                    <label>How did I eat today?</label>
-                    <textarea id="tokyo_food" rows="2" placeholder="Describe your meals..."></textarea>
+
+                    <div class="section">
+                        <div class="section-title">2. JAPANESE PROGRESS</div>
+                        <div class="goal">Goal: Actually improve my Japanese level</div>
+                        
+                        <label>What I studied/practiced today:</label>
+                        <textarea id="tokyo_japanese" rows="3" placeholder="List what you studied..."></textarea>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">3. FINANCIAL PROGRESS</div>
+                        <div class="goal">Goal: Take another step toward our financial goals</div>
+                        
+                        <label>What I did today:</label>
+                        <textarea id="tokyo_financial" rows="3" placeholder="List what you did..."></textarea>
+                    </div>
                 </div>
 
-                <div class="section">
-                    <div class="section-title">2. JAPANESE PROGRESS</div>
-                    <div class="goal">Goal: Actually improve my Japanese level</div>
-                    
-                    <label>What I studied/practiced today:</label>
-                    <textarea id="tokyo_japanese" rows="3" placeholder="List what you studied..."></textarea>
-                </div>
-
-                <div class="section">
-                    <div class="section-title">3. FINANCIAL PROGRESS</div>
-                    <div class="goal">Goal: Take another step toward our financial goals</div>
-                    
-                    <label>What I did today:</label>
-                    <textarea id="tokyo_financial" rows="3" placeholder="List what you did..."></textarea>
-                </div>
-            </div>
-
-            <button type="submit" class="submit-btn" id="submitBtn">Send Report to Wife</button>
-        </form>
+                <button type="submit" class="submit-btn" id="submitBtn">Send Report to Wife</button>
+            </form>
+        </div>
     </div>
 
+    <!-- EmailJS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBRh2G4ZrRj9oyMaOO37RYKoWmuUXLZ7zE",
+            authDomain: "daily-report-45a55.firebaseapp.com",
+            projectId: "daily-report-45a55",
+            storageBucket: "daily-report-45a55.firebasestorage.app",
+            messagingSenderId: "881711664586",
+            appId: "1:881711664586:web:eca1378c5cd72ed9f65333"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        // Initialize EmailJS
+        emailjs.init("hWlSmvPuQLZOag4V-");
+
+        // DOM elements
+        const loginScreen = document.getElementById('loginScreen');
+        const mainApp = document.getElementById('mainApp');
+        const googleSignInBtn = document.getElementById('googleSignInBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const userAvatar = document.getElementById('userAvatar');
+        const userName = document.getElementById('userName');
+
+        // Check auth state
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in
+                loginScreen.classList.add('hidden');
+                mainApp.classList.remove('hidden');
+                userAvatar.src = user.photoURL;
+                userName.textContent = user.displayName;
+            } else {
+                // User is signed out
+                loginScreen.classList.remove('hidden');
+                mainApp.classList.add('hidden');
+            }
+        });
+
+        // Google Sign In
+        googleSignInBtn.addEventListener('click', async () => {
+            try {
+                await signInWithPopup(auth, provider);
+            } catch (error) {
+                console.error('Error signing in:', error);
+                alert('Failed to sign in. Please try again.');
+            }
+        });
+
+        // Sign Out
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+            } catch (error) {
+                console.error('Error signing out:', error);
+            }
+        });
+
         // Determine which form to show based on day of week
         function determineLocation() {
             const today = new Date();
-            const day = today.getDay(); // 0 = Sunday, 6 = Saturday
-            
-            // Friday (5), Saturday (6), Sunday (0), Monday (1) = Kyoto
-            // Tuesday (2), Wednesday (3), Thursday (4) = Tokyo
+            const day = today.getDay();
             
             if (day === 5 || day === 6 || day === 0 || day === 1) {
                 document.getElementById('kyotoForm').style.display = 'block';
@@ -306,12 +489,16 @@
 
         const currentLocation = determineLocation();
 
-        // Initialize EmailJS (You'll need to add your own keys here)
-        emailjs.init("hWlSmvPuQLZOag4V-"); // Replace with your EmailJS public key
-
+        // Form submission
         document.getElementById('reportForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            const user = auth.currentUser;
+            if (!user) {
+                alert('You must be signed in to submit a report.');
+                return;
+            }
+
             const submitBtn = document.getElementById('submitBtn');
             const successMsg = document.getElementById('successMessage');
             const errorMsg = document.getElementById('errorMessage');
@@ -332,6 +519,7 @@
             if (currentLocation === 'kyoto') {
                 emailBody = `KYOTO DAILY REPORT
 ${today}
+Submitted by: ${user.displayName} (${user.email})
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -364,6 +552,7 @@ ${document.getElementById('kyoto_financial').value}`;
                 
                 emailBody = `TOKYO DAILY REPORT
 ${today}
+Submitted by: ${user.displayName} (${user.email})
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -396,10 +585,10 @@ ${document.getElementById('tokyo_financial').value}`;
             try {
                 // Send email using EmailJS
                 await emailjs.send(
-                    'service_v5nsaar',  // Replace with your EmailJS service ID
-                    'Gmail', // Replace with your EmailJS template ID
+                    'service_v5nsaar',
+                    'Gmail',
                     {
-                        to_email: 'natsumi.erron@gmail.com',  // Replace with your wife's email
+                        to_email: 'natsumi.erron@gmail.com',
                         subject: `Daily Report - ${today}`,
                         message: emailBody,
                         location: currentLocation === 'kyoto' ? 'Kyoto' : 'Tokyo'
